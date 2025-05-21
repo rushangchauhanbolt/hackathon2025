@@ -1,23 +1,22 @@
-import express, { Request, Response } from 'express';
+import Fastify from 'fastify';
 
-const app = express();
-const hostname = '0.0.0.0'; // <--- Required for Railway
-const port = process.env.PORT || 3000;
+const server = Fastify();
 
-app.use(express.json()); // To parse JSON body
-
-app.post('/', (req: Request, res: Response) => {
-  console.log("🚀 ~ app.post ~ req:", req)
-  const data = req.body;
-  console.log('Received:', data);
-  res.status(200).json({ challenge: data.challenge, received: data });
+server.get('/ping', async (request, reply) => {
+  return { message: 'Server is alive!' };
 });
 
-app.get('/ping', (req: Request, res: Response) => {
-  res.status(200).json({ message: 'Server zinda hain!' });
+server.post('/submit', async (request, reply) => {
+  const data = request.body;
+  return { message: 'Data received', received: data };
 });
 
+const port = Number(process.env.PORT || 3000);
 
-app.listen(port, () => {
-  console.log(`Server running on http://${hostname}:${port}`);
+server.listen({ port, host: '0.0.0.0' }, (err, address) => {
+  if (err) {
+    console.error(err);
+    process.exit(1);
+  }
+  console.log(`Server listening at ${address}`);
 });
