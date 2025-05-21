@@ -16,11 +16,14 @@
     "@slack/bolt": "^4.4.0",
     "axios": "^1.9.0",
     "express": "^5.1.0",
-    "fastify": "^5.3.3"
+    "fastify": "^5.3.3",
+    "fuse.js": "^7.1.0",
+    "xml2js": "^0.6.2"
   },
   "devDependencies": {
     "@types/express": "^5.0.2",
     "@types/node": "^22.15.21",
+    "@types/xml2js": "^0.4.14",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.3"
   }
