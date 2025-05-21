@@ -7,8 +7,8 @@ server.get('/ping', async (request, reply) => {
 });
 
 server.post('/submit', async (request, reply) => {
-  const data = request.body;
-  return { message: 'Data received', received: data };
+  const data: any = request.body;
+  return { message: 'Data received', received: data, challenge: data.challenge  };
 });
 
 const port = Number(process.env.PORT || 3000);
