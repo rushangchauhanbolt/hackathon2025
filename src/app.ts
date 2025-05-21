@@ -21,17 +21,20 @@ server.get("/ping", async (request, reply) => {
 
 server.post("/submit", async (request: any, reply) => {
     console.log("🚀 ~ server.post ~ request:", request);
-    const rawText: string = request.body.event.text;
-    const cleanText = rawText.replace("@Hackathon 2025", "");
+    const event = request.body.event;
+    const userId: string = event.user
+    const rawText: string = event.text;
+    const cleanText = rawText.replace("<@U08TFACE9TN>", "");
 
-    sendMessage(YOUR_CHANNEL_ID, JSON.stringify({ cleanText }));
+    sendMessage(YOUR_CHANNEL_ID, { userId, cleanText });
 });
 
-async function sendMessage(channelId: string, text: string) {
+async function sendMessage(channelId: string, data: any ) {
     try {
+        const message = `<@${data?.userId}> ${data?.cleanText}`;
         await slackApp.client.chat.postMessage({
             channel: channelId,
-            text,
+            text: message,
         });
         console.log(`Message sent to channel ${channelId}`);
     } catch (error) {
