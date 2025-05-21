@@ -1,49 +1,43 @@
 import Fastify from "fastify";
-const { App, say } = require('@slack/bolt');
+const { App, say } = require("@slack/bolt");
 
 // Initializes your app with your bot token and signing secret
 const slackApp = new App({
-  token: process.env.SLACK_BOT_TOKEN,
-  signingSecret: process.env.SLACK_SIGNING_SECRET
+    token: process.env.SLACK_BOT_TOKEN,
+    signingSecret: process.env.SLACK_SIGNING_SECRET,
 });
 
-
 (async () => {
-  // Start your app
-  await slackApp.start(4000);
-  slackApp.logger.info('⚡️ Bolt app is running!');
+    // Start your app
+    await slackApp.start(4000);
+    slackApp.logger.info("⚡️ Bolt app is running!");
 })();
 
 const server = Fastify();
-const YOUR_CHANNEL_ID = "C08SYMKDQT1"
+const YOUR_CHANNEL_ID = "C08SYMKDQT1";
 server.get("/ping", async (request, reply) => {
     return { message: "Server is alive!" };
 });
 
-server.post("/submit", async (request, reply) => {
+server.post("/submit", async (request: any, reply) => {
     console.log("🚀 ~ server.post ~ request:", request);
-    const data: any = request.body;
-    sendMessage(YOUR_CHANNEL_ID, data);
-    return {
-        message: "Data received",
-        received: data,
-        challenge: data.challenge,
-    };
+    const rawText: string = request.body.event.text;
+    const cleanText = rawText.replace("@Hackathon 2025", "");
+
+    sendMessage(YOUR_CHANNEL_ID, JSON.stringify({ cleanText }));
 });
 
-
 async function sendMessage(channelId: string, text: string) {
-  try {
-    await slackApp.client.chat.postMessage({
-      channel: channelId,
-      text,
-    });
-    console.log(`Message sent to channel ${channelId}`);
-  } catch (error) {
-    console.error('Error sending message:', error);
-  }
+    try {
+        await slackApp.client.chat.postMessage({
+            channel: channelId,
+            text,
+        });
+        console.log(`Message sent to channel ${channelId}`);
+    } catch (error) {
+        console.error("Error sending message:", error);
+    }
 }
-
 
 const port = Number(process.env.PORT || 3000);
 
