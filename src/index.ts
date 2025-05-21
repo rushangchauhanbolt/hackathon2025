@@ -1,7 +1,8 @@
 import express, { Request, Response } from 'express';
 
 const app = express();
-const port = 3000;
+const hostname = '0.0.0.0'; // <--- Required for Railway
+const port = process.env.PORT || 3000;
 
 app.use(express.json()); // To parse JSON body
 
@@ -12,5 +13,5 @@ app.post('/submit', (req: Request, res: Response) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+  console.log(`Server running on http://${hostname}:${port}`);
 });
