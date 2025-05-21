@@ -21,7 +21,7 @@ server.post("/submit", async (request, reply) => {
 function sendDataToSlack(data: Object) {
     axios
         .post(
-            "https://hooks.slack.com/services/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",
+            "https://hooks.slack.com/services/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",
             {
                 text: JSON.stringify(data),
             }
