@@ -13,6 +13,11 @@ app.post('/', (req: Request, res: Response) => {
   res.status(200).json({ challenge: data.challenge, received: data });
 });
 
+app.get('/ping', (req: Request, res: Response) => {
+  res.status(200).json({ message: 'Server zinda hain!' });
+});
+
+
 app.listen(port, () => {
   console.log(`Server running on http://${hostname}:${port}`);
 });
